@@ -87,6 +87,8 @@ function [exitFlag, step_counter] = trialsLoop( imageAgent, ...
               dot = max(strfind(world, '.'));
               worldName = world(slash+1:dot-1);  % the name of the curent world
               
+              fprintf('DEBUG: world name %s\n', worldName);
+              
               %-----------------------------------------------------------------------
               %
               %    Reading the map. If this is a practice trial, move the
