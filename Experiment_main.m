@@ -1,7 +1,7 @@
 %------------------------------------------------------------------------
 %
 %   Runs the maze solving task and eyetracking
-%   Version Jyly 04 2017
+%   Version July 04 2017
 %
 %   Changes: 
 %   1. Demographics dialog replaced by Subject ID dialog
