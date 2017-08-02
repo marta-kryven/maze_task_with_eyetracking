@@ -88,10 +88,7 @@ function [exitFlag, step_counter] = trialsLoop( imageAgent, ...
               worldName = world(slash+1:dot-1);  % the name of the curent world
               
               fprintf('DEBUG: world name %s\n', worldName);
-<<<<<<< HEAD
-=======
-              
->>>>>>> 5f98f4ee1eda77192b9bcc12bc2becc2c9e750b3
+
               %-----------------------------------------------------------------------
               %
               %    Reading the map. If this is a practice trial, move the
@@ -313,8 +310,4 @@ function [exitFlag, step_counter] = trialsLoop( imageAgent, ...
        if ~dummy_mode
            Eyelink('StopRecording');
        end
-<<<<<<< HEAD
 end
-=======
-end
->>>>>>> 5f98f4ee1eda77192b9bcc12bc2becc2c9e750b3

@@ -30,7 +30,7 @@
 %
 %-----------------------------------------------------------------------
 
-function [escaped_experiment, step_counter_1, step_counter_2] = ...
+function [escaped_experiment, step_counter_1, step_counter_2, fileID] = ...
     solving_main_eyetracking(subject, ... % subject ID for this session
     window,                           ... % needed for Psychtoolbox
     mon,                              ... % screen dimensions
@@ -305,8 +305,6 @@ function [escaped_experiment, step_counter_1, step_counter_2] = ...
             done = 1;
         end
 
-        fclose(fileID);
-       
     end
     
     

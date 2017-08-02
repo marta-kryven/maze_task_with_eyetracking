@@ -84,7 +84,7 @@ try
     mon.slack=Screen('GetFlipInterval',window)/2; % how long does it take to render a new frame
     
     if ~dummy_mode
-        edfFile= [ 'edf_dir/' subject '_raw_tracking.edf'];
+        edfFile= [ 'temp.edf'];
         [el, eter]=setEyetrackerDefaults(window, edfFile, mon, eyetracker_dummy_mode); 
         if eter == 1                                  % broken link to the eye tracker
             fprintf('Could not open link to the eyetracker. \nIs all equipent on? \nIs the Ethernet cable plugged in?\n');
@@ -111,7 +111,12 @@ try
     %------------------------------------------------------------------------
 
 
-    [escaped, step_counter_1, step_counter_2] = ...
+    escaped = 0;
+    step_counter_1 = 0;
+    step_counter_2 = 0;
+    
+    % returns the open file, which needs to be closed
+    [escaped, step_counter_1, step_counter_2, fileID] = ...
         solving_main_eyetracking(subject, window, mon, dummy_mode, draw_dots, el);
     
     
@@ -123,6 +128,19 @@ try
     
     
     if ~escaped
+        
+        % final comments for the subject
+        [text] = comment_input(window, 'How did you make your decisions? Please type your answer and press OK.' );
+             %'How did you make your decisions\n during the expiment?\n');
+             
+        str = '';
+        for i=1:size(text,1)  
+            str = [str  text{i}];
+        end
+          
+        %fprintf ('DEBUG: feedback was: %s \n', str);
+        fprintf(fileID, 'SubjectComment:%s\n', str);
+        
         Screen('TextSize',window,30);
         DrawFormattedText(window, 'Thanks! \n\nPress any key to see how you did in maze-solving... ', 'center', 'center', [0 0 0]);
         DrawFormattedText(window, 'You''ve completed the experiment.', 'center', mon.hp+150, [0 0 0]);
@@ -132,6 +150,8 @@ try
         [ keyIsDown, t, keyCode ] = KbCheck;
         KbReleaseWait;  
 
+        
+        
         feedback = sprintf([ 'You took %d steps in the first session. \n\n',...
             'You took %d steps in the second session. \n\n',...
             'Previously people took between 280 and 430 steps.\n\n Press any key...'], ...
@@ -140,8 +160,24 @@ try
         DrawFormattedText(window, feedback, 'center', 'center', [0 0 0]);
         final_screen = Screen('Flip', window);
         KbWait;     
+
     end
     
+    %------------------------------------------------------------------------
+    %
+    %   Final comments for the experimenter 
+    %
+    %------------------------------------------------------------------------
+        
+    
+    [text] = comment_input(window, 'Please enter experimenter comments about this session:');
+    str = '';
+    for i=1:size(text,1)  
+        str = [str  text{i}];
+    end
+    fprintf(fileID, 'ExperimenterComment:%s\n', str);
+    
+    fclose(fileID);
     psychToolboxCleanup(oldVisualDebugLevel, oldSupressAllWarnings);
     
 catch
@@ -158,7 +194,7 @@ end
 %------------------------------------------------------------------------
 
 
-if ~dummy_mode
+if ~dummy_mode && ~eyetracker_dummy_mode
     
     Eyelink('StopRecording');
     Eyelink('CloseFile');
@@ -166,7 +202,7 @@ if ~dummy_mode
 
     try
         Eyelink('ReceiveFile');
-        %movefile(edfFile,  'edf_dir/' subject '_raw_tracking.edf');
+        movefile(edfFile,  [ 'edf_dir/' subject  '_raw.edf']);
     catch edferr
         fprintf('Problem receiving data file ''%s''\n',edfFile);
         disp(edferr);
