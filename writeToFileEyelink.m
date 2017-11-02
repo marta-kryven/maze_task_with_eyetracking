@@ -1,4 +1,5 @@
 function writeToFileEyelink(fileID, ...
+         logtimestamp, ...
          subject, ... %subject ID
          rt, ... %reaction time that it takes the subjevt to move to a new cell
          samples_data, ... % eyelink data, sampled coordinates at all times
@@ -77,8 +78,8 @@ function writeToFileEyelink(fileID, ...
             timestamp = samples_data(i,4);
 
             %record eye position relative to the top left corner of the world
-            line1 = sprintf('%s\t%4.0f\t%4.0f\t%4.0f\tsample\t', subject, rt, eye_x-worldtopleft_x, eye_y-worldtopleft_y);
-            line2 = sprintf('%8.0f\t0\t%4.0f\t%d\t%d\n', timestamp, pupil, cellx, celly);
+            line1 = sprintf('%s\t%s\t%4.0f\t%4.0f\t%4.0f\tsample\t', logtimestamp, subject, rt, eye_x-worldtopleft_x, eye_y-worldtopleft_y);
+            line2 = sprintf('%8.0f\t0\t%4.0f\t%d\t%d\t', timestamp, pupil, cellx, celly);
             line3 = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%d\t', world, path, svisible, s_trial, readKeyName, actionName, actionValid );
             line4 = sprintf('%d\t%d\t%s\t%d\n', blackremains, numsquaresopen, squaretype, numexits);
             fprintf(fileID, [line1 line2 line3 line4]);
@@ -117,7 +118,7 @@ function writeToFileEyelink(fileID, ...
     %'rt\teyex\teyey\tdatatype\ttimefrom\ttimeto\tpupil\teyecellx\teyecelly\tworld\tpath'
     %\tvisible is not written
 
-    line1 = sprintf('%s\t%4.0f\t%4.0f\t%4.0f\tevent\t', subject, rt, eye_x, eye_y);
+    line1 = sprintf('%s\t%s\t%4.0f\t%4.0f\t%4.0f\tevent\t', logtimestamp, subject, rt, eye_x, eye_y);
     line2 = sprintf('%8.0f\t%8.0f\t%4.0f\t%d\t%d\t', timefrom, timeto, pupil, cellx, celly);
     line3 = sprintf('%s\t%s\t%s\t%s\t%s\t%s\t%d\t', world, path, svisible, s_trial, readKeyName, actionName, actionValid );
     line4 = sprintf('%d\t%d\t%s\t%d\n', blackremains, numsquaresopen, squaretype, numexits);

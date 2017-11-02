@@ -36,7 +36,8 @@ function [escaped_experiment, step_counter_1, step_counter_2, fileID] = ...
     mon,                              ... % screen dimensions
     dummy_mode,                       ... % run the task without ET and recording responses?
     draw_dots,                        ... % draw where the subject is curreltly looking
-    el )                              % eyetracker 
+    el,                               ... % eyetracker 
+    repeat_task_times )                   % how many times to repeat the task?
 
     %-----------------------------------------------------------------------
     % setup the experiment
@@ -68,6 +69,9 @@ function [escaped_experiment, step_counter_1, step_counter_2, fileID] = ...
     demo_maps = loadAllMaps(strcat(pwd, '/practice_world_maps/'));               % practice maze maps
     number_of_practice_trials = size(demo_maps,1);           
     
+    total_trials = number_of_test_trials_easy_block_1 + ...
+               number_of_test_trials_med_block_1 + number_of_test_trials_hard_block_1;
+           
     %-----------------------------------------------------------------------
     %
     % test_maps and demo_maps are arrays of filenames
@@ -118,7 +122,10 @@ function [escaped_experiment, step_counter_1, step_counter_2, fileID] = ...
       fprintf('Starting experiment...\n');
       
       fileID = fopen([fixationlog_here subject '_solving_log.txt'],'w');
-      fprintf(fileID,'subject\trt\teyex\teyey\tdatatype\ttimefrom\ttimeto\tpupil\teyecellx\teyecelly\tworld\tpath\tvisible\ttrialtype\tkeyPressed\tkeyAction\tvalidAction\tblackremains\tnumsquaresopen\tsquaretype\tnumexits\n');  % The file format  
+      fprintf(fileID,  'timestamp\tsubject\trt\teyex\teyey\tdatatype\ttimefrom\ttimeto\tpupil');
+      fprintf(fileID,  '\teyecellx\teyecelly\tworld\tpath\tvisible\ttrialtype');
+      fprintf(fileID,  '\tkeyPressed\tkeyAction\tvalidAction\tblackremains\tnumsquaresopen');
+      fprintf(fileID,  '\tsquaretype\tnumexits\n');  % The log file format  
        
       fprintf('Starting demo...\n');
       
@@ -174,7 +181,7 @@ function [escaped_experiment, step_counter_1, step_counter_2, fileID] = ...
                  %
                  %-----------------------------------------------------------------------
                  
-                 repeat_practice = askIfMorePractice(window);
+                 repeat_practice = askIfMorePractice(window, repeat_task_times, total_trials);
                  
                  if repeat_practice == 1
                      escaped_experiment=1;
@@ -198,9 +205,13 @@ function [escaped_experiment, step_counter_1, step_counter_2, fileID] = ...
 
       while ~escaped_experiment && ~done
 
-           total_trials = number_of_test_trials_easy_block_1 + ...
-               number_of_test_trials_med_block_1 + number_of_test_trials_hard_block_1;
-
+          
+            %-----------------------------------------------------------------------
+            %
+            %    Sow the easy trials first 
+            %
+            %-----------------------------------------------------------------------
+      
             testTrialsPermutation = randperm(number_of_test_trials_easy_block_1);
 
             [escaped_experiment, step_counter] = trialsLoop( imageAgent, ... 
@@ -213,6 +224,12 @@ function [escaped_experiment, step_counter_1, step_counter_2, fileID] = ...
                 break;
             end
 
+            %-----------------------------------------------------------------------
+            %
+            %    Sow the medium trials  
+            %
+            %-----------------------------------------------------------------------
+      
             step_counter_1 = step_counter_1 + step_counter;
 
             testTrialsPermutation = randperm(number_of_test_trials_med_block_1);
@@ -230,6 +247,12 @@ function [escaped_experiment, step_counter_1, step_counter_2, fileID] = ...
                 break;
             end
 
+            %-----------------------------------------------------------------------
+            %
+            %    Sow the hard trials  
+            %
+            %-----------------------------------------------------------------------
+            
             testTrialsPermutation    = randperm(number_of_test_trials_hard_block_1);
 
             [escaped_experiment, step_counter] = trialsLoop( imageAgent, ... 
@@ -245,61 +268,85 @@ function [escaped_experiment, step_counter_1, step_counter_2, fileID] = ...
             if escaped_experiment
                 break;
             end
+            
+            repeats = 1;
+            
+            while repeats < repeat_task_times
 
+                    repeats = repeats + 1;
+                    
+                    escaped_experiment = showSplash(window);
 
-            escaped_experiment = showSplash(window);
+                    if escaped_experiment
+                        fprintf('Second half skipped...\n');
+                        break;
+                    end
 
-            if escaped_experiment
-                fprintf('Second half skipped...\n');
-                break;
-            end
+                    total_trials = number_of_test_trials_easy_block_2 + ...
+                       number_of_test_trials_med_block_2 + number_of_test_trials_hard_block_2;
 
-            total_trials = number_of_test_trials_easy_block_2 + ...
-               number_of_test_trials_med_block_2 + number_of_test_trials_hard_block_2;
-           
-            testTrialsPermutation  = randperm(number_of_test_trials_easy_block_2); 
+                    %-----------------------------------------------------------------------
+                    %
+                    %     easy trials
+                    %
+                    %-----------------------------------------------------------------------
+                    
+                    testTrialsPermutation  = randperm(number_of_test_trials_easy_block_2); 
 
-            [escaped_experiment, step_counter] = trialsLoop( imageAgent, ... 
-                testTrialsPermutation, ... % the order in which the worlds will be shown
-                test_maps_easy_block_2, ...% the array of world maps loaded from file
-                2, ... % 0 -- demo, 1 -- practice, 2 -- experiment
-                fileID, window, mon, subject, 0, total_trials, dummy_mode, draw_dots, el );
+                    [escaped_experiment, step_counter] = trialsLoop( imageAgent, ... 
+                        testTrialsPermutation, ... % the order in which the worlds will be shown
+                        test_maps_easy_block_2, ...% the array of world maps loaded from file
+                        2, ... % 0 -- demo, 1 -- practice, 2 -- experiment
+                        fileID, window, mon, subject, 0, total_trials, dummy_mode, draw_dots, el );
 
-            step_counter_2 = step_counter_2 + step_counter;
+                    step_counter_2 = step_counter_2 + step_counter;
 
-            if escaped_experiment
-                break;
-            end
+                    if escaped_experiment
+                        break;
+                    end
 
-            testTrialsPermutation  = randperm(number_of_test_trials_med_block_2); 
+                    %-----------------------------------------------------------------------
+                    %
+                    %     medium trials
+                    %
+                    %-----------------------------------------------------------------------
+                    
+                    testTrialsPermutation  = randperm(number_of_test_trials_med_block_2); 
 
-            [escaped_experiment, step_counter] = trialsLoop( imageAgent, ... 
-                testTrialsPermutation, ... % the order in which the worlds will be shown
-                test_maps_med_block_2, ...% the array of world maps loaded from file
-                2, ... % 0 -- demo, 1 -- practice, 2 -- experiment
-                fileID, window, mon, subject, ...
-                number_of_test_trials_easy_block_2,  total_trials, dummy_mode, draw_dots, el);
+                    [escaped_experiment, step_counter] = trialsLoop( imageAgent, ... 
+                        testTrialsPermutation, ... % the order in which the worlds will be shown
+                        test_maps_med_block_2, ...% the array of world maps loaded from file
+                        2, ... % 0 -- demo, 1 -- practice, 2 -- experiment
+                        fileID, window, mon, subject, ...
+                        number_of_test_trials_easy_block_2,  total_trials, dummy_mode, draw_dots, el);
 
-            step_counter_2 = step_counter_2 + step_counter;
+                    step_counter_2 = step_counter_2 + step_counter;
 
-            if escaped_experiment
-                break;
-            end
+                    if escaped_experiment
+                        break;
+                    end
 
-            testTrialsPermutation  = randperm(number_of_test_trials_hard_block_2); 
+                    %-----------------------------------------------------------------------
+                    %
+                    %     hard trials
+                    %
+                    %-----------------------------------------------------------------------
+                    
+                    testTrialsPermutation  = randperm(number_of_test_trials_hard_block_2); 
 
-            [escaped_experiment, step_counter] = trialsLoop( imageAgent, ... 
-                testTrialsPermutation, ... % the order in which the worlds will be shown
-                test_maps_hard_block_2, ...% the array of world maps loaded from file
-                2, ... % 0 -- demo, 1 -- practice, 2 -- experiment
-                fileID, window, mon, subject, ...
-                number_of_test_trials_easy_block_2+number_of_test_trials_med_block_2,  total_trials, ...
-                dummy_mode, draw_dots, el);
+                    [escaped_experiment, step_counter] = trialsLoop( imageAgent, ... 
+                        testTrialsPermutation, ... % the order in which the worlds will be shown
+                        test_maps_hard_block_2, ...% the array of world maps loaded from file
+                        2, ... % 0 -- demo, 1 -- practice, 2 -- experiment
+                        fileID, window, mon, subject, ...
+                        number_of_test_trials_easy_block_2+number_of_test_trials_med_block_2,  total_trials, ...
+                        dummy_mode, draw_dots, el);
 
-            step_counter_2 = step_counter_2 + step_counter;
+                    step_counter_2 = step_counter_2 + step_counter;
 
-            if escaped_experiment
-                break;
+                    if escaped_experiment
+                        break;
+                    end
             end
 
             done = 1;

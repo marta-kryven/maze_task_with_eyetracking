@@ -1,9 +1,19 @@
 %------------------------------------------------------------------------
 %
 %   Runs the maze solving task and eyetracking
-%   Version July 04 2017
 %
-%   Changes: 
+%------------------------------------------------------------------------
+%
+%  Changes Nov 02 2017
+%  1. new log fields:
+%           timestamp dd/mm/yyyy hh:mm:ss:ms
+%
+%  2. added a log when the black rectangle is shown 
+%  
+%  3. added a variable repeat_task_times, which will repeat the same task 
+%
+%------------------------------------------------------------------------
+%   Changes Aug 02 2017 
 %   1. Demographics dialog replaced by Subject ID dialog
 %   
 %   2. new log fields:
@@ -38,13 +48,23 @@ Priority(2);
 KbName('UnifyKeyNames');
 textColour = [0, 0, 0, 255];
 
+
+%------------------------------------------------------------------------
+%
+% the same task will run this many times
+%
+%------------------------------------------------------------------------
+
+
+repeat_task_times = 1;  
+
 %------------------------------------------------------------------------
 %
 % testing and debuging variables 
 %
 %------------------------------------------------------------------------
 
-dummy_mode = 0;             % run the task without calling ET at all? 0=no, 1=yes
+dummy_mode = 1;             % run the task without calling ET at all? 0=no, 1=yes
 draw_dots  = 0;             % draw where the subject is curreltly looking
 
 if dummy_mode
@@ -117,7 +137,7 @@ try
     
     % returns the open file, which needs to be closed
     [escaped, step_counter_1, step_counter_2, fileID] = ...
-        solving_main_eyetracking(subject, window, mon, dummy_mode, draw_dots, el);
+        solving_main_eyetracking(subject, window, mon, dummy_mode, draw_dots, el, repeat_task_times);
     
     
     %------------------------------------------------------------------------

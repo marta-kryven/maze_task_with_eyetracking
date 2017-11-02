@@ -123,6 +123,10 @@ function [exitFlag, step_counter] = trialsLoop( imageAgent, ...
               Screen('FillRect', window, [0,0,0], [10 mon.hp-120 120 mon.hp-10] );
               flipTime = Screen('Flip', window);
               
+              line1 = sprintf('%s\t%s\n', getTimestamp(), 'startmarker');
+              fprintf(fileID, line1);
+            
+              
               %-----------------------------------------------------------------------
               % 
               %    Drawing a maze
@@ -144,6 +148,8 @@ function [exitFlag, step_counter] = trialsLoop( imageAgent, ...
               
               flipTime = Screen('Flip', window, flipTime + black_rectangle_time, 0);
             
+              line1 = sprintf('%s\t%s\n', getTimestamp(), 'endmarker');
+              fprintf(fileID, line1);
               
               tic;  %get current time so that we can record theit reaction times
               rt_end=0;
@@ -279,7 +285,10 @@ function [exitFlag, step_counter] = trialsLoop( imageAgent, ...
                            dots_samples = [];     
                        end                                         
                       
-                      writeToFileEyelink(fileID, subject, ...
+                     
+                      writeToFileEyelink(fileID, ...
+                                getTimestamp(), ...
+                                subject, ...
                                 rt_end*1000,  ...
                                 dots_samples, dots_events, ...  %*
                                 worldName, ...
