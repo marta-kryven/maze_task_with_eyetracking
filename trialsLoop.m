@@ -224,7 +224,11 @@ function [exitFlag, step_counter] = trialsLoop( imageAgent, ...
                            
                        actionName = 'R';
                    elseif length(KbName(keyCode)) > 0
-                       fprintf('Unexpected key %s %d\n', KbName(keyCode), keyCode)
+                       if length(KbName(keyCode)) == 1
+                            fprintf('Unexpected key %s %d\n', KbName(keyCode), keyCode)
+                       else
+                            fprintf('Unexpected key, multiple keys pressed at the same time\n')
+                       end
                    end
                    
                    %update the maze if the agent has moved

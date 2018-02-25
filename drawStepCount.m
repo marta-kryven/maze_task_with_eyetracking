@@ -8,7 +8,12 @@ function drawStepCount(trial_type, steps, window, offy, next_map_index, number_o
         stepStr=sprintf('Please use arrow keys to move. [%d out of %d] Steps: %d', ...
             number_of_prior_trials+next_map_index, total_trials, steps);
       end
-      DrawFormattedText( window, stepStr, 'center', offy-60, [255,0,0]);
+      
+      if offy-60 > 20
+        DrawFormattedText( window, stepStr, 'center', offy-60, [255,0,0]);
+      else
+        DrawFormattedText( window, stepStr, 'center', 20, [255,0,0]);  
+      end
       
       if trial_type <2 && next_map_index == 4
           DrawFormattedText( window, 'Please notice how the rooms open as you approach.', 'center', offy-30, [255,0,0]);

@@ -97,7 +97,11 @@ function [escaped_experiment, step_counter_1, step_counter_2, fileID] = ...
     %
     %-----------------------------------------------------------------------
     
-    img = imread(strcat(pwd, '/tex/agent1.png')); % the agent's face
+    if ispc==0
+        img = imread(strcat(pwd, '/tex/agent1.png')); % the agent's face
+    else
+        img = imread(strcat(pwd, '\tex\agent1.png'));
+    end
     imageAgent = Screen('MakeTexture', window, img);
     
 
@@ -141,7 +145,7 @@ function [escaped_experiment, step_counter_1, step_counter_2, fileID] = ...
             number_of_practice_trials,... % number of trials in total in this block
             dummy_mode,               ... % run the task without ET and recording responses?
             draw_dots,                ... % draw where the subject is curreltly looking
-            el )                          % eyetracker 
+            el );                          % eyetracker 
 
         
       %-----------------------------------------------------------------------
