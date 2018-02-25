@@ -2,6 +2,18 @@
 %
 %   Runs the maze solving task and eyetracking
 %
+
+%------------------------------------------------------------------------
+%
+%  Changes Feb 25 2018
+%
+%   1. fixed the problem with multiple button presses. Now if multiple key pressess occur the program will log into the command screen and treat it is as if only one of the keys was pressed.
+%   2. set repeat_task_times=2
+%   3. reverse slashes for Windows
+%   4. fixed text above the maze is clipped off screen.
+%
+%------------------------------------------------------------------------
+
 %------------------------------------------------------------------------
 %
 %  Changes Nov 02 2017
