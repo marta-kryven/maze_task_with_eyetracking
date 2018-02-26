@@ -6,10 +6,14 @@ function [keyCode] = readKeyboardBufferAndFlushAllKeys(ikeyCode, keyCode_input)
 
            [ keyIsDown, t, k ] = KbCheck([]);
            ik = find(k);      % what is the next key on the buffer?
+           
 
            if isempty(ik)
                 flush = 1;    % if there is nothing then the buffer is flushed
            else
+                
+                ik = ik(1); % XXX
+                
                 if k(KbName('ESCAPE'))
                   %flush = 1;    % if there is ESC terminate whatever we are doing
                   keyCode = k;  % override the key

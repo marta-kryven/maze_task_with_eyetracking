@@ -167,8 +167,13 @@ function [exitFlag, step_counter] = trialsLoop( imageAgent, ...
                    %[ keyIsDown, t, keyCode ] = KbCheck([], scanList);   %keyCode is an array of 256
                    [ keyIsDown, t, keyCode ] = KbCheck([]);
                    ikeyCode = find(keyCode);
-                   
+
                    if ~isempty(ikeyCode)
+
+                      % keyCode is an array of 256 flags
+
+                      ikeyCode = ikeyCode(1);  % XXX
+                   
                       [keyCode] = readKeyboardBufferAndFlushAllKeys(ikeyCode, keyCode);
                    end
                    

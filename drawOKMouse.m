@@ -6,7 +6,7 @@ function ok = drawOKMouse(window, x, y)
    green = [0,255,0];
    
    xok = [ 140 240];
-   yok = [ 720 750];
+   yok = [ 700 740];
    
    ok = 0;
    
@@ -22,7 +22,7 @@ function ok = drawOKMouse(window, x, y)
    end
    
    textColour = [0,0,0];
-   DrawFormattedText( window, 'OK', xok(1)+40, yok(1)+5, textColour);
+   DrawFormattedText( window, 'OK', xok(1)+40, yok(1)+25, textColour);
    
    
    
