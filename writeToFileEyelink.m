@@ -55,8 +55,9 @@ function writeToFileEyelink(fileID, ...
  
  if length(readKeyName) == 0
       readKeyName = 'NA';
- elseif length(readKeyName) == 2
-     fprintf('At least two keys pressed:%s, %s\n', readKeyName{1}, readKeyName{2});
+ elseif iscell(readKeyName)
+     numberofkeys = length(readKeyName);
+     fprintf('%d keys pressed: %s, %s\n', numberofkeys, readKeyName{1}, readKeyName{2});
      readKeyName = readKeyName{2};
      fprintf('Forcing key:%s, %s\n', readKeyName, actionName);
  end

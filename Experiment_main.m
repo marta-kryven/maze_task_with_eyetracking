@@ -56,6 +56,9 @@ clc
 clear all
 close all
 commandwindow; % focus on the command window
+
+Screen('Preference', 'SkipSyncTests', 1); % this might disable the yellow triangle
+
 Priority(2);
 KbName('UnifyKeyNames');
 textColour = [0, 0, 0, 255];
