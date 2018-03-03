@@ -31,6 +31,7 @@ function [esc] = askIfMorePractice(window, repeat_task_times, num_mazes)
       esc = 1;
     elseif keyCode(KbName('DownArrow'))
       fprintf('Proceed with experiment.\n');  
+      esc = 0;
     else
       fprintf('Practice more.\n');
       esc = 2;

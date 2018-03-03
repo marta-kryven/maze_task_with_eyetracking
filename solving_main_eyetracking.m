@@ -180,7 +180,7 @@ function [escaped_experiment, step_counter_1, step_counter_2, fileID] = ...
             
             repeat_practice = 2;
             
-            while repeat_practice == 2 && ~escaped_experiment
+            while repeat_practice == 2% && ~escaped_experiment
             
                 fprintf('Starting practice...\n');
                 
@@ -195,11 +195,13 @@ function [escaped_experiment, step_counter_1, step_counter_2, fileID] = ...
                  %    Ask if the subject wants to continue 
                  %
                  %-----------------------------------------------------------------------
-                 
+
                  repeat_practice = askIfMorePractice(window, repeat_task_times, total_trials);
                  
                  if repeat_practice == 1
-                     escaped_experiment=1;
+                    escaped_experiment=1;
+                 else
+                    escaped_experiment=0;
                  end
                  
             end
