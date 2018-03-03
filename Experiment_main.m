@@ -98,7 +98,7 @@ eyetracker_dummy_mode = 1;  % native eyetracker dummy mode, will call ET functio
 subject = sprintf('temp_subject_ID_%d', int32(rand()*1000)); % generate a random temporary subject ID
 prompt={'ID:'};               
 title= 'Session ID';
-answer=inputdlg(prompt,title); 
+answer=inputdlg(prompt,title, [1 50]); 
 
 if (length(answer{1}) > 1) 
     subject = answer{1};

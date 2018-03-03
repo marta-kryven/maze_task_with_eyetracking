@@ -28,7 +28,11 @@ function [exitFlag, step_counter] = trialsLoop( imageAgent, ...
         scanList(80)=1; %esc
         scanList(79)=1; %esc
     
-        cellsize = 80;                   % a size of a cell in pixels as it will be drawn
+        if ispc==0
+            cellsize = 80;                   % a size of a cell in pixels as it will be drawn
+        else
+            cellsize = 100;
+        end
         gray = 127;
         black_rectangle_time = 1;        % this is used to flash the black sqaure for ephys synchronisation
         exitFlag = 0;                    % 0 -- finished successfully, 1 -- ECS

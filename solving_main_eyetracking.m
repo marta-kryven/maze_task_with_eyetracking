@@ -46,28 +46,39 @@ function [escaped_experiment, step_counter_1, step_counter_2, fileID] = ...
     step_counter_1 = 0;
     step_counter_2 = 0;
     
-    fixationlog_here = 'solving_log_dir/';               % logging
-
-    test_maps_easy_block_1 = loadAllMaps(strcat(pwd, '/block1/world_design_easy/'));  % maze maps
-    number_of_test_trials_easy_block_1 = size(test_maps_easy_block_1,1);              % how many maze maps were loaded
+    if ispc==0
+        fixationlog_here = 'solving_log_dir/';               % logging
+        test_maps_easy_block_1 = loadAllMaps(strcat(pwd, '/block1/world_design_easy/'));  % maze maps
+        test_maps_med_block_1 = loadAllMaps(strcat(pwd, '/block1/world_design_medium/')); % maze maps
+        test_maps_hard_block_1 = loadAllMaps(strcat(pwd, '/block1/world_design_hard/'));  % maze maps
     
-    test_maps_med_block_1 = loadAllMaps(strcat(pwd, '/block1/world_design_medium/')); % maze maps
+        test_maps_easy_block_2 = loadAllMaps(strcat(pwd, '/block2/world_design_easy/'));  % maze maps
+        test_maps_med_block_2 = loadAllMaps(strcat(pwd, '/block2/world_design_medium/')); % maze maps
+        test_maps_hard_block_2 = loadAllMaps(strcat(pwd, '/block2/world_design_hard/'));  % maze maps
+        
+        demo_maps = loadAllMaps(strcat(pwd, '/practice_world_maps/'));               % practice maze maps
+     
+    else
+         fixationlog_here = 'solving_log_dir\';
+         test_maps_easy_block_1 = loadAllMaps(strcat(pwd, '\block1\world_design_easy\'));
+         test_maps_med_block_1 = loadAllMaps(strcat(pwd, '\block1\world_design_medium\')); % maze maps
+         test_maps_hard_block_1 = loadAllMaps(strcat(pwd, '\block1\world_design_hard\'));  % maze maps
+     
+         test_maps_easy_block_2 = loadAllMaps(strcat(pwd, '\block2\world_design_easy\'));  % maze maps
+         test_maps_med_block_2 = loadAllMaps(strcat(pwd, '\block2\world_design_medium\'));
+         test_maps_hard_block_2 = loadAllMaps(strcat(pwd, '\block2\world_design_hard\'));
+         
+         demo_maps = loadAllMaps(strcat(pwd, '\practice_world_maps\'));
+    end
+    
+    number_of_test_trials_easy_block_1 = size(test_maps_easy_block_1,1);  % how many maze maps were loaded
     number_of_test_trials_med_block_1 = size(test_maps_med_block_1,1);                % how many maze maps were loaded
+    number_of_test_trials_hard_block_1 = size(test_maps_hard_block_1,1); 
     
-    test_maps_hard_block_1 = loadAllMaps(strcat(pwd, '/block1/world_design_hard/'));  % maze maps
-    number_of_test_trials_hard_block_1 = size(test_maps_hard_block_1,1);              % how many maze maps were loaded
-    
-    test_maps_easy_block_2 = loadAllMaps(strcat(pwd, '/block2/world_design_easy/'));  % maze maps
-    number_of_test_trials_easy_block_2 = size(test_maps_easy_block_2,1);              % how many maze maps were loaded
-    
-    test_maps_med_block_2 = loadAllMaps(strcat(pwd, '/block2/world_design_medium/')); % maze maps
-    number_of_test_trials_med_block_2 = size(test_maps_med_block_2,1);                % how many maze maps were loaded
-    
-    test_maps_hard_block_2 = loadAllMaps(strcat(pwd, '/block2/world_design_hard/'));  % maze maps
-    number_of_test_trials_hard_block_2 = size(test_maps_hard_block_2,1);              % how many maze maps were loaded
-    
-    demo_maps = loadAllMaps(strcat(pwd, '/practice_world_maps/'));               % practice maze maps
-    number_of_practice_trials = size(demo_maps,1);           
+    number_of_test_trials_easy_block_2 = size(test_maps_easy_block_2,1);  
+    number_of_test_trials_med_block_2 = size(test_maps_med_block_2,1);  
+    number_of_test_trials_hard_block_2 = size(test_maps_hard_block_2,1);
+    number_of_practice_trials = size(demo_maps,1); 
     
     total_trials = number_of_test_trials_easy_block_1 + ...
                number_of_test_trials_med_block_1 + number_of_test_trials_hard_block_1;

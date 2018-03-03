@@ -2,8 +2,14 @@ function [mon, dres, rm] = configMonitor()
     rm = max(Screen('Screens'));  % Display on remote monitor? 0=no, 1=yes.
     
     %monitor setup
-    mon.wp=1024;              %Monitor resolution, horizontal (pixels)
-    mon.hp=768;               %Monitor resolution, vertical (pixels)
+    if ispc==0
+        mon.wp=1024;              %Monitor resolution, horizontal (pixels)
+        mon.hp=768;               %Monitor resolution, vertical (pixels)
+    else
+        mon.wp=1920;              %Monitor resolution, horizontal (pixels)
+        mon.hp=1080;               %Monitor resolution, vertical (pixels)
+    end
+
     mon.wcm= 49.55;%38.4;             %Width of viewable portion of monitor (cm; measure to be sure)
     mon.hcm= 31;%28.8;             %Height of viewable portion of monitor (cm; measure to be sure)
     mon.dcm=67; %59;               %Distance from observer to monitor (cm; measure to be sure)
